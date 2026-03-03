@@ -67,11 +67,11 @@ app.delete('/produtos/:id', (req, res) => {
 });
 
 // Ensina o Node a servir a pasta 'dist' do Vue
-app.use(express.static(path.join(__dirname, 'frontend', 'dist')));
+app.use(express.static(path.join(__dirname, '..', 'frontend', 'dist')));
 
 // Redireciona qualquer rota que não seja da API para o Vue.js
-app.get('(.*)', (req, res) => {
-  res.sendFile(path.join(__dirname, 'frontend', 'dist', 'index.html'));
+app.get('/:path*', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'frontend', 'dist', 'index.html'));
 });
 
 const PORT = process.env.PORT || 3000;
