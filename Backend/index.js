@@ -8,6 +8,7 @@ const app = express();
 // Middlewares 
 app.use(cors()); // Permite que o Vue.js (que vai rodar em outra porta) acesse esta API
 app.use(express.json()); // Ensina o Express a entender dados enviados no formato JSON
+app.use(express.static(path.join(__dirname, '..', 'frontend', 'dist'))); // Ensina o Node a servir a pasta 'dist' do Vue
 
 
 //CREATE
@@ -66,11 +67,13 @@ app.delete('/produtos/:id', (req, res) => {
     });
 });
 
-// Ensina o Node a servir a pasta 'dist' do Vue
-app.use(express.static(path.join(__dirname, '..', 'frontend', 'dist')));
 
-// Redireciona qualquer rota que não seja da API para o Vue.js
-app.get('/:path*', (req, res) => {
+app.use((req, res, next) => {
+  // Se a requisição for para algo que começa com /api, não envie o index.html
+  if (req.url.startsWith('/api')) {
+    return next();
+  }
+  // Para todo o resto (rotas do Vue), envie o index.html
   res.sendFile(path.join(__dirname, '..', 'frontend', 'dist', 'index.html'));
 });
 
