@@ -70,7 +70,7 @@ app.delete('/produtos/:id', (req, res) => {
 app.use(express.static(path.join(__dirname, 'frontend', 'dist')));
 
 // Redireciona qualquer rota que não seja da API para o Vue.js
-app.get('*', (req, res) => {
+app.get('(.*)', (req, res) => {
   res.sendFile(path.join(__dirname, 'frontend', 'dist', 'index.html'));
 });
 
